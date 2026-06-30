@@ -1,1 +1,1723 @@
-# full-java
+# JAVA DEVELOPER COMPLETE BOOK — VOLUME 1
+### Sections 1–9: Fundamentals → Exception Handling
+*(Definition, Syntax, Example, Practice Questions for every topic)*
+
+---
+
+# SECTION 1: JAVA FUNDAMENTALS
+
+## 1.1 History of Java
+**Definition:** Java was created by **James Gosling** at Sun Microsystems, released in **1995**. Originally called "Oak," designed for embedded/consumer devices, later redesigned for internet applications. Now owned by **Oracle** (after acquiring Sun in 2010).
+
+**Key facts to remember:**
+- Motto: "Write Once, Run Anywhere" (WORA)
+- Influenced by C and C++ syntax, but removed complexities like pointers and manual memory management
+
+**Practice Questions**
+1. Who created Java and in which year?
+2. Why was Java originally named "Oak"?
+3. What does WORA mean and how is it achieved?
+
+---
+
+## 1.2 Features of Java
+**Definition:** Core properties that make Java popular for enterprise/backend development.
+
+| Feature | Meaning |
+|---|---|
+| Simple | No pointers, automatic memory management |
+| Object-Oriented | Everything (except primitives) is an object |
+| Platform Independent | Bytecode runs on any OS with a JVM |
+| Secure | No explicit pointers, runs in sandboxed JVM, classloader verification |
+| Robust | Strong memory management, exception handling, type checking |
+| Multithreaded | Built-in support for concurrent execution |
+| Architecture Neutral | Bytecode not tied to a specific CPU architecture |
+| Portable | Same bytecode runs everywhere a JVM exists |
+| High Performance | JIT compiler converts bytecode to native code at runtime |
+| Distributed | Built-in networking capability (RMI, sockets) |
+| Dynamic | Supports dynamic loading of classes at runtime |
+
+**Practice Questions**
+1. Name and explain any 5 features of Java.
+2. Why is Java considered "secure" compared to C++?
+3. What makes Java "robust"?
+
+---
+
+## 1.3 JVM (Java Virtual Machine)
+**Definition:** An abstract machine that provides a runtime environment to execute Java bytecode. It is **platform-dependent** (different JVM implementations for Windows/Linux/Mac), but the bytecode it runs is platform-independent.
+
+**Components of JVM:**
+- **Class Loader** — loads `.class` files into memory
+- **Bytecode Verifier** — checks code for security violations
+- **Execution Engine** — interprets/JIT-compiles bytecode to native code
+- **Runtime Data Areas** — Heap, Stack, Method Area, PC Register, Native Method Stack
+
+**Diagram (conceptual):**
+```
+.java file --(javac)--> .class file (bytecode) --(JVM)--> Machine Code
+```
+
+**Practice Questions**
+1. Is JVM platform-independent or platform-dependent? Explain.
+2. What are the main components of JVM?
+3. What is the role of the Class Loader?
+
+---
+
+## 1.4 JRE (Java Runtime Environment)
+**Definition:** JRE = JVM + Core Libraries (like `java.lang`, `java.util`) + supporting files needed to **run** Java applications. It does NOT include development tools like the compiler.
+
+**Practice Questions**
+1. What is included in JRE that is not in JVM alone?
+2. Can you compile Java code using only JRE? (Answer: No, need JDK for `javac`.)
+
+---
+
+## 1.5 JDK (Java Development Kit)
+**Definition:** JDK = JRE + Development Tools (`javac` compiler, `javadoc`, `jdb` debugger, `jar` tool, etc.). Required to **write and compile** Java programs.
+
+**Relationship Diagram:**
+```
+JDK
+ └── JRE
+       └── JVM
+```
+
+**Comparison Table**
+| Tool | Purpose | Contains |
+|---|---|---|
+| JVM | Executes bytecode | Execution engine, memory areas |
+| JRE | Runs Java apps | JVM + libraries |
+| JDK | Develops Java apps | JRE + compiler + dev tools |
+
+**Practice Questions**
+1. Draw/explain the relationship between JDK, JRE, and JVM.
+2. If you only need to run a `.jar` file someone gave you, do you need JDK or just JRE?
+
+---
+
+## 1.6 Java Architecture
+**Definition:** Describes how Java source code transforms into a running program.
+
+**Flow:**
+```
+Source Code (.java)
+   ↓ javac (compiler)
+Bytecode (.class)
+   ↓ Class Loader (loads into JVM)
+Bytecode Verification
+   ↓ Execution Engine (Interpreter + JIT Compiler)
+Machine Code → Output
+```
+
+**Practice Questions**
+1. Explain the full journey of a `.java` file to program output.
+2. What is the role of the JIT compiler in this architecture?
+
+---
+
+## 1.7 Compilation Process
+**Definition:** The process of converting human-readable Java source code into bytecode using `javac`.
+
+**Syntax (command line):**
+```bash
+javac Main.java     # produces Main.class (bytecode)
+java Main            # JVM loads Main.class and runs it
+```
+
+**Example**
+```java
+// File: Main.java
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("Compiled and Running!");
+    }
+}
+```
+```bash
+javac Main.java   # Step 1: Compile
+java Main          # Step 2: Run
+```
+
+**Practice Questions**
+1. What command compiles a Java file? What command runs it?
+2. What is the output file extension after compilation?
+
+---
+
+## 1.8 Bytecode
+**Definition:** Intermediate, platform-independent code generated by the Java compiler (stored in `.class` files). It is NOT machine code — it's instructions understood by the JVM.
+
+**Key Point:** Bytecode makes Java portable — any device with a JVM can run it, regardless of underlying hardware/OS.
+
+**Practice Questions**
+1. What is bytecode and why is it important for portability?
+2. Is bytecode the same as machine code? Why or why not?
+
+---
+
+## 1.9 Java Program Structure
+**Definition:** The standard layout/order of a Java source file.
+
+**Syntax:**
+```java
+package com.example;            // 1. Package declaration (optional, must be first)
+
+import java.util.Scanner;       // 2. Import statements
+
+public class Main {             // 3. Class definition
+    static int globalVar = 10;  // 4. Fields
+
+    public static void main(String[] args) {   // 5. Main method (entry point)
+        // 6. Statements
+        System.out.println("Structure example");
+    }
+
+    static void helperMethod() {  // 7. Other methods
+    }
+}
+```
+
+**Practice Questions**
+1. What is the correct order of package, import, and class declarations?
+2. Can a Java file have more than one class? What's the restriction?
+
+---
+
+## 1.10 Comments
+**Definition:** Non-executable text used to explain code; ignored by the compiler.
+
+**Syntax:**
+```java
+// Single-line comment
+
+/* 
+   Multi-line
+   comment
+*/
+
+/**
+ * Javadoc comment - used to generate documentation
+ * @param args command line arguments
+ */
+```
+
+**Practice Questions**
+1. What are the three types of comments in Java?
+2. What is a Javadoc comment used for?
+
+---
+
+## 1.11 Variables
+**Definition:** Named memory locations that hold data which can change during program execution.
+
+**Types of variables:**
+| Type | Scope | Example |
+|---|---|---|
+| Local variable | Inside a method/block | declared in `main()` |
+| Instance variable | Belongs to object, non-static | `this.name` |
+| Static/Class variable | Shared across all objects | `static int count;` |
+
+**Syntax & Example:**
+```java
+class Demo {
+    int instanceVar = 5;       // instance variable
+    static int staticVar = 10; // static variable
+
+    void method() {
+        int localVar = 15;     // local variable, exists only inside method
+        System.out.println(localVar);
+    }
+}
+```
+
+**Practice Questions**
+1. What is the difference between instance and static variables?
+2. Where are local variables stored in memory? (Answer: Stack)
+3. Write a class with one of each variable type.
+
+---
+
+## 1.12 Constants
+**Definition:** Values that cannot change once assigned, declared using the `final` keyword. By convention, constant names are written in UPPERCASE.
+
+**Syntax:**
+```java
+final double PI = 3.14159;
+final int MAX_USERS = 100;
+// PI = 3.0;  // ERROR - cannot reassign a final variable
+```
+
+**Practice Questions**
+1. How do you declare a constant in Java?
+2. What happens if you try to reassign a `final` variable?
+
+---
+
+## 1.13 Data Types
+**Definition:** Specifies the kind/size of value a variable can hold. Java is **statically typed** — every variable's type must be declared.
+
+Java has **2 categories**: Primitive (8 types) and Reference (Non-primitive: String, Array, Class, Interface).
+
+### 1.13.1 byte
+**Definition:** 8-bit signed integer. Range: -128 to 127. Used to save memory in large arrays.
+```java
+byte age = 25;
+```
+**Q:** Why use `byte` instead of `int` for small values? (Answer: memory optimization in large arrays.)
+
+### 1.13.2 short
+**Definition:** 16-bit signed integer. Range: -32,768 to 32,767.
+```java
+short year = 2024;
+```
+**Q:** When would `short` be preferred over `int`?
+
+### 1.13.3 int
+**Definition:** 32-bit signed integer, most commonly used integer type. Range: ~-2.1 billion to 2.1 billion.
+```java
+int population = 1000000;
+```
+**Q:** What is the default value of an uninitialized `int` instance variable? (Answer: 0)
+
+### 1.13.4 long
+**Definition:** 64-bit signed integer, for very large numbers. Must use `L` suffix for literals.
+```java
+long worldPopulation = 8000000000L;
+```
+**Q:** What happens if you forget the `L` suffix on a large literal? (Answer: compiler error if value exceeds int range, since literal is treated as int by default.)
+
+### 1.13.5 float
+**Definition:** 32-bit single-precision floating point. Must use `f` suffix.
+```java
+float price = 99.99f;
+```
+**Q:** Why must you add `f` after a float literal?
+
+### 1.13.6 double
+**Definition:** 64-bit double-precision floating point — default type for decimal literals in Java.
+```java
+double pi = 3.14159265358979;
+```
+**Q:** What's the default data type Java assumes for a decimal literal like `5.5`?
+
+### 1.13.7 char
+**Definition:** 16-bit Unicode character, holds a single character in single quotes.
+```java
+char grade = 'A';
+char unicodeChar = '\u0041'; // also 'A'
+```
+**Q:** Can a `char` hold a numeric value? (Answer: Yes, char is internally represented as an unsigned 16-bit integer, e.g., `char c = 65;` → 'A'.)
+
+### 1.13.8 boolean
+**Definition:** Holds only `true` or `false`. Used in conditions.
+```java
+boolean isJavaFun = true;
+```
+**Q:** What is the default value of a boolean instance variable? (Answer: false)
+
+**Master Practice Set for Data Types**
+1. List all 8 primitive data types with their size and range.
+2. What's the difference between primitive and reference data types?
+3. Write a program declaring one variable of each primitive type and print them.
+
+---
+
+## 1.14 Type Casting
+
+### 1.14.1 Implicit Casting (Widening)
+**Definition:** Automatic conversion from a smaller data type to a larger one. Safe, no data loss.
+```java
+int i = 100;
+long l = i;      // int -> long, automatic
+double d = l;    // long -> double, automatic
+```
+**Order:** byte → short → int → long → float → double
+
+### 1.14.2 Explicit Casting (Narrowing)
+**Definition:** Manual conversion from a larger type to a smaller one. Can lose data/precision; requires explicit `(type)` syntax.
+```java
+double d = 9.78;
+int i = (int) d;     // i = 9 (decimal truncated, not rounded)
+
+int big = 300;
+byte b = (byte) big;  // overflow! result = 44 (wraps around using modulo 256)
+```
+
+**Practice Questions**
+1. What's the difference between implicit and explicit casting?
+2. Predict the output: `int x = (int) 7.9;`
+3. What happens when you cast an `int` value of 300 to `byte`? Why?
+
+---
+
+## 1.15 Operators
+
+### 1.15.1 Arithmetic Operators
+```java
+int a = 10, b = 3;
+a + b;  // 13
+a - b;  // 7
+a * b;  // 30
+a / b;  // 3 (integer division, decimal truncated)
+a % b;  // 1 (modulus/remainder)
+```
+**Q:** What is `10 / 3` in Java vs `10.0 / 3`? (Answer: 3 vs 3.333...)
+
+### 1.15.2 Relational Operators
+```java
+a == b;  // equal to
+a != b;  // not equal to
+a > b;   a < b;   a >= b;   a <= b;
+```
+Returns `boolean`.
+
+### 1.15.3 Logical Operators
+```java
+boolean x = true, y = false;
+x && y;  // AND - both must be true
+x || y;  // OR - at least one true
+!x;      // NOT - inverts value
+```
+**Note:** `&&` and `||` are **short-circuit** operators — second operand not evaluated if result is already determined.
+**Q:** Why is short-circuiting useful? (e.g., `if (obj != null && obj.value() > 0)` avoids NullPointerException)
+
+### 1.15.4 Assignment Operators
+```java
+int x = 5;
+x += 3;  // x = x + 3 = 8
+x -= 2;  // x = 6
+x *= 2;  // x = 12
+x /= 4;  // x = 3
+x %= 2;  // x = 1
+```
+
+### 1.15.5 Unary Operators
+```java
+int a = 5;
+-a;     // negation, -5
+++a;    // pre-increment, a becomes 6, then used
+a++;    // post-increment, a used first, then becomes 6
+--a; a--; // similar for decrement
+!true;  // logical NOT
+```
+**Q:** Difference between `a++` and `++a`?
+```java
+int a = 5;
+int b = a++;  // b = 5, a = 6 (post: assign then increment)
+int c = ++a;  // a = 7, c = 7 (pre: increment then assign)
+```
+
+### 1.15.6 Ternary Operator
+**Definition:** Shorthand for if-else, returns a value.
+**Syntax:** `condition ? valueIfTrue : valueIfFalse`
+```java
+int a = 10, b = 20;
+int max = (a > b) ? a : b;   // max = 20
+```
+
+### 1.15.7 Bitwise Operators
+```java
+int a = 5, b = 3;   // 0101, 0011
+a & b;   // 1  (AND)
+a | b;   // 7  (OR)
+a ^ b;   // 6  (XOR)
+~a;      // -6 (NOT, inverts all bits)
+```
+
+### 1.15.8 Shift Operators
+```java
+int x = 8;        // 1000
+x << 1;            // 16 - left shift (multiply by 2)
+x >> 1;             // 4  - right shift (divide by 2, sign-preserving)
+-8 >>> 1;           // unsigned right shift, fills leading bits with 0
+```
+
+**Master Practice Set for Operators**
+1. What does the `%` operator return for `-7 % 3`? (Answer: -1, sign follows dividend in Java)
+2. Explain short-circuit evaluation with an example.
+3. Write a ternary expression to find the largest of two numbers.
+4. What is the output of `5 & 3`? Show the binary working.
+
+---
+
+## 1.16 Input/Output
+
+**Definition:** Java provides `System.out` for output and `Scanner`/`BufferedReader` for input.
+
+```java
+// Output
+System.out.println("Hello");   // prints with newline
+System.out.print("Hello");      // prints without newline
+System.out.printf("Value: %d%n", 10);  // formatted output
+```
+
+**Practice Questions**
+1. What is the difference between `print()` and `println()`?
+2. How do you print formatted output with variable substitution?
+
+---
+
+## 1.17 Scanner Class
+**Definition:** Class in `java.util` package used to read user input from console.
+
+**Syntax:**
+```java
+import java.util.Scanner;
+
+Scanner sc = new Scanner(System.in);
+System.out.print("Enter your name: ");
+String name = sc.nextLine();       // reads a line of text
+System.out.print("Enter your age: ");
+int age = sc.nextInt();             // reads an int
+double salary = sc.nextDouble();    // reads a double
+sc.close();                          // close to free resources
+```
+
+**Example Program**
+```java
+import java.util.Scanner;
+public class Demo {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter two numbers: ");
+        int a = sc.nextInt();
+        int b = sc.nextInt();
+        System.out.println("Sum = " + (a + b));
+    }
+}
+```
+**Common Pitfall:** Mixing `nextInt()` and `nextLine()` — `nextInt()` doesn't consume the newline, so a following `nextLine()` may read an empty string. Fix: call an extra `sc.nextLine()` to consume the leftover newline.
+
+**Practice Questions**
+1. Which package does the `Scanner` class belong to?
+2. Write a program to read a student's name and 3 marks, then print the average.
+3. Why does calling `nextLine()` right after `nextInt()` sometimes cause issues?
+
+---
+
+## 1.18 Command Line Arguments
+**Definition:** Values passed to a Java program at the time of execution via the terminal, captured in the `String[] args` parameter of `main()`.
+
+**Syntax:**
+```java
+public class Main {
+    public static void main(String[] args) {
+        for (String arg : args) {
+            System.out.println(arg);
+        }
+    }
+}
+```
+```bash
+java Main hello world 123
+# Output:
+# hello
+# world
+# 123
+```
+**Note:** All command-line arguments are received as `String` — must be parsed (e.g., `Integer.parseInt(args[0])`) if numeric values are needed.
+
+**Practice Questions**
+1. What data type are command-line arguments stored as?
+2. Write a program that adds two numbers passed as command-line arguments.
+
+---
+
+# SECTION 2: CONTROL STATEMENTS
+
+## 2.1 if
+**Definition:** Executes a block of code only if a condition evaluates to `true`.
+```java
+int age = 20;
+if (age >= 18) {
+    System.out.println("Adult");
+}
+```
+**Q:** What happens if the condition is false and there is no else? (Answer: block simply skipped.)
+
+## 2.2 if-else
+**Definition:** Executes one block if condition is true, another if false.
+```java
+int num = -5;
+if (num >= 0) {
+    System.out.println("Non-negative");
+} else {
+    System.out.println("Negative");
+}
+```
+
+## 2.3 Nested if
+**Definition:** An `if` statement inside another `if` statement.
+```java
+int age = 25;
+boolean hasLicense = true;
+if (age >= 18) {
+    if (hasLicense) {
+        System.out.println("Can drive");
+    } else {
+        System.out.println("Needs license");
+    }
+}
+```
+
+## 2.4 else-if ladder
+**Definition:** Chain of conditions checked in order; first true condition's block executes.
+```java
+int marks = 75;
+if (marks >= 90) System.out.println("A");
+else if (marks >= 75) System.out.println("B");
+else if (marks >= 60) System.out.println("C");
+else System.out.println("F");
+```
+**Practice Questions (2.1–2.4)**
+1. Write a program to check if a number is positive, negative, or zero using else-if ladder.
+2. Write nested-if logic to check eligibility for a loan (age > 21 AND income > 50000).
+3. What is the difference between multiple separate `if` statements and an `else-if` ladder? (Answer: separate ifs check all conditions independently; else-if stops at the first true match.)
+
+## 2.5 switch
+**Definition:** Multi-way branch statement comparing one value against multiple constant cases. Works with `byte`, `short`, `char`, `int`, `String`, `enum`.
+```java
+int day = 3;
+switch (day) {
+    case 1:
+        System.out.println("Monday");
+        break;
+    case 2:
+        System.out.println("Tuesday");
+        break;
+    case 3:
+        System.out.println("Wednesday");
+        break;
+    default:
+        System.out.println("Invalid day");
+}
+```
+**Important:** Without `break`, execution **falls through** to the next case.
+
+## 2.6 Enhanced switch (Java 14+)
+**Definition:** New arrow-style switch syntax — no fall-through, can return a value directly.
+```java
+int day = 3;
+String name = switch (day) {
+    case 1 -> "Monday";
+    case 2 -> "Tuesday";
+    case 3 -> "Wednesday";
+    default -> "Invalid";
+};
+System.out.println(name);
+
+// with multiple labels and yield for blocks
+String type = switch (day) {
+    case 1, 7 -> "Weekend";
+    case 2, 3, 4, 5, 6 -> {
+        yield "Weekday";
+    }
+    default -> "Unknown";
+};
+```
+**Practice Questions (2.5–2.6)**
+1. What happens if you forget `break` in a traditional switch statement?
+2. Convert this if-else chain into a switch statement: grading system A/B/C/F based on int marks band.
+3. What is the advantage of enhanced switch over traditional switch?
+
+## 2.7 break
+**Definition:** Immediately exits the nearest enclosing loop or switch statement.
+```java
+for (int i = 0; i < 10; i++) {
+    if (i == 5) break;
+    System.out.println(i);  // prints 0 1 2 3 4
+}
+```
+
+## 2.8 continue
+**Definition:** Skips the current iteration and moves to the next iteration of the loop.
+```java
+for (int i = 0; i < 5; i++) {
+    if (i == 2) continue;
+    System.out.println(i);  // prints 0 1 3 4 (skips 2)
+}
+```
+
+## 2.9 return
+**Definition:** Exits a method, optionally returning a value to the caller.
+```java
+int square(int n) {
+    return n * n;   // exits method immediately with value
+}
+void printIfPositive(int n) {
+    if (n < 0) return;  // exits early, no value (void method)
+    System.out.println(n);
+}
+```
+**Practice Questions (2.7–2.9)**
+1. What's the difference between `break` and `continue`?
+2. Can `return` be used in a `void` method? In what way?
+3. Write a loop that prints numbers 1–20 but skips multiples of 3 and stops completely at 18.
+
+---
+
+# SECTION 3: LOOPS
+
+## 3.1 for loop
+**Definition:** Repeats a block a fixed/known number of times. Syntax: `for(initialization; condition; update)`.
+```java
+for (int i = 1; i <= 5; i++) {
+    System.out.println(i);
+}
+```
+
+## 3.2 while loop
+**Definition:** Repeats a block as long as a condition is true; condition checked **before** each iteration.
+```java
+int i = 1;
+while (i <= 5) {
+    System.out.println(i);
+    i++;
+}
+```
+
+## 3.3 do-while loop
+**Definition:** Like `while`, but condition checked **after** the loop body — guarantees at least one execution.
+```java
+int i = 1;
+do {
+    System.out.println(i);
+    i++;
+} while (i <= 5);
+```
+
+## 3.4 Nested loops
+**Definition:** A loop inside another loop; inner loop completes all iterations for each single iteration of the outer loop. Common for grids/patterns/matrices.
+```java
+for (int i = 1; i <= 3; i++) {
+    for (int j = 1; j <= 3; j++) {
+        System.out.print(i + "" + j + " ");
+    }
+    System.out.println();
+}
+// Output:
+// 11 12 13
+// 21 22 23
+// 31 32 33
+```
+
+**Pattern Example (common interview/practice question):**
+```java
+// Print a right triangle of stars
+for (int i = 1; i <= 5; i++) {
+    for (int j = 1; j <= i; j++) {
+        System.out.print("* ");
+    }
+    System.out.println();
+}
+```
+
+## 3.5 Enhanced for loop (for-each)
+**Definition:** Simplified syntax to iterate over arrays/collections without managing an index.
+```java
+int[] arr = {10, 20, 30};
+for (int num : arr) {
+    System.out.println(num);
+}
+```
+**Limitation:** Cannot access the index, and cannot modify the original array element through the loop variable (it's a copy).
+
+**Master Practice Set for Loops**
+1. Difference between `while` and `do-while`? Give an example where the difference matters.
+2. Write a program to print all even numbers from 1–50 using a `for` loop.
+3. Write nested loops to print a number pyramid:
+```
+1
+1 2
+1 2 3
+```
+4. Why can't you use enhanced for-loop when you need to remove elements while iterating?
+5. Write a program to calculate factorial using a `while` loop.
+
+---
+
+# SECTION 4: METHODS
+
+## 4.1 Method Declaration
+**Definition:** Specifies method signature — access modifier, return type, name, parameters.
+```java
+public int add(int a, int b);  // declaration (signature) - no body, as in interfaces
+```
+
+## 4.2 Method Definition
+**Definition:** Declaration + actual body/implementation.
+```java
+public int add(int a, int b) {
+    return a + b;
+}
+```
+
+## 4.3 Method Calling
+**Definition:** Invoking a method by its name with required arguments.
+```java
+public class Demo {
+    public static void main(String[] args) {
+        int result = add(5, 3);   // calling
+        System.out.println(result);
+    }
+    static int add(int a, int b) { return a + b; }
+}
+```
+
+## 4.4 Parameters
+**Definition:** Variables listed in a method's signature that receive values passed by the caller.
+- **Formal parameters:** the variables in the method definition (`int a, int b`)
+- **Actual parameters/arguments:** the real values passed during call (`add(5, 3)` → 5 and 3)
+
+## 4.5 Return Types
+**Definition:** Specifies the data type of value a method gives back. Use `void` if nothing is returned.
+```java
+int getNumber() { return 5; }
+void printMessage() { System.out.println("Hi"); }  // no return value
+String getName() { return "Java"; }
+```
+
+## 4.6 Call by Value
+**Definition:** Java always passes a **copy of the value** to a method (for primitives, the actual value is copied; for objects, the reference's value/address is copied).
+```java
+void modify(int x) { x = 100; }  // does NOT affect caller's original variable
+int a = 5;
+modify(a);
+System.out.println(a);  // still 5
+
+void modifyArray(int[] arr) { arr[0] = 100; }  // DOES affect content (same object referenced)
+int[] nums = {1, 2, 3};
+modifyArray(nums);
+System.out.println(nums[0]); // 100
+```
+**Q:** Is Java pass-by-value or pass-by-reference? (Answer: ALWAYS pass-by-value — even object references are passed "by value" of the reference itself.)
+
+## 4.7 Recursion
+**Definition:** A method calling itself to solve a smaller version of the same problem, with a base case to stop infinite calls.
+```java
+int factorial(int n) {
+    if (n <= 1) return 1;        // base case
+    return n * factorial(n - 1); // recursive case
+}
+// factorial(5) -> 5*4*3*2*1 = 120
+```
+**Note:** Each recursive call adds a new frame to the call stack; too many calls without a base case → `StackOverflowError`.
+
+## 4.8 Method Overloading
+**Definition:** Multiple methods with the **same name** but **different parameter lists** (number/type/order of params) in the same class. Resolved at **compile time**.
+```java
+int add(int a, int b) { return a + b; }
+double add(double a, double b) { return a + b; }
+int add(int a, int b, int c) { return a + b + c; }
+```
+**Note:** Changing only the return type does NOT count as overloading — compiler error.
+
+## 4.9 Variable Arguments (Varargs)
+**Definition:** Allows a method to accept zero or more arguments of the same type, treated internally as an array. Syntax: `type... name`.
+```java
+int sum(int... nums) {
+    int total = 0;
+    for (int n : nums) total += n;
+    return total;
+}
+sum();          // 0
+sum(1, 2);      // 3
+sum(1, 2, 3, 4);// 10
+```
+**Rule:** Varargs must be the LAST parameter in the method signature.
+
+**Master Practice Set for Methods**
+1. Explain why Java is "pass by value" even when passing objects, with example.
+2. Write an overloaded `area()` method for circle (1 param: radius), rectangle (2 params: length, width).
+3. Write a recursive method to compute the nth Fibonacci number.
+4. Write a method using varargs to find the maximum among any number of integers.
+5. What error occurs with infinite recursion (no base case)?
+
+---
+
+# SECTION 5: ARRAYS
+
+## 5.1 Single Dimensional Array
+**Definition:** A linear collection of elements of the same type, stored in contiguous memory, accessed via index (starting at 0). Fixed size once created.
+```java
+int[] arr = new int[5];           // declaration with default values (all 0)
+int[] arr2 = {10, 20, 30, 40, 50}; // declaration with initialization
+arr[0] = 100;                      // assignment
+System.out.println(arr2[2]);       // access -> 30
+System.out.println(arr2.length);   // 5 (property, no parentheses)
+```
+
+## 5.2 Multi Dimensional Array
+**Definition:** An "array of arrays" — commonly 2D (rows × columns), used for matrices/grids.
+```java
+int[][] matrix = new int[3][3];          // 3x3 grid, all zeros
+int[][] matrix2 = {{1,2,3},{4,5,6},{7,8,9}};
+System.out.println(matrix2[1][2]);        // 6 (row 1, col 2)
+
+for (int i = 0; i < matrix2.length; i++) {
+    for (int j = 0; j < matrix2[i].length; j++) {
+        System.out.print(matrix2[i][j] + " ");
+    }
+    System.out.println();
+}
+```
+
+## 5.3 Jagged Array
+**Definition:** A multi-dimensional array where each row can have a **different number of columns** (unlike a regular rectangular 2D array).
+```java
+int[][] jagged = new int[3][];
+jagged[0] = new int[]{1};
+jagged[1] = new int[]{1, 2};
+jagged[2] = new int[]{1, 2, 3};
+
+for (int[] row : jagged) {
+    for (int val : row) System.out.print(val + " ");
+    System.out.println();
+}
+```
+
+## 5.4 Array Traversal
+**Definition:** Visiting each element of the array, typically via loop.
+```java
+int[] arr = {5, 10, 15};
+for (int i = 0; i < arr.length; i++) {
+    System.out.println(arr[i]);
+}
+// or enhanced for
+for (int val : arr) System.out.println(val);
+```
+
+## 5.5 Array Searching
+**Definition:** Finding whether/where a value exists in an array.
+```java
+// Linear Search - O(n)
+int linearSearch(int[] arr, int target) {
+    for (int i = 0; i < arr.length; i++) {
+        if (arr[i] == target) return i;
+    }
+    return -1;
+}
+
+// Binary Search - O(log n), requires SORTED array
+int binarySearch(int[] arr, int target) {
+    int low = 0, high = arr.length - 1;
+    while (low <= high) {
+        int mid = low + (high - low) / 2;
+        if (arr[mid] == target) return mid;
+        else if (arr[mid] < target) low = mid + 1;
+        else high = mid - 1;
+    }
+    return -1;
+}
+```
+
+## 5.6 Array Sorting
+**Definition:** Arranging array elements in ascending/descending order.
+```java
+int[] arr = {5, 2, 8, 1, 9};
+Arrays.sort(arr);                       // ascending, in-place
+System.out.println(Arrays.toString(arr)); // [1, 2, 5, 8, 9]
+
+// Descending (only works for object arrays, not primitive int[])
+Integer[] arr2 = {5, 2, 8, 1, 9};
+Arrays.sort(arr2, Collections.reverseOrder());
+```
+
+## 5.7 Array Copying
+**Definition:** Creating a duplicate of an array (shallow copy for object arrays).
+```java
+int[] original = {1, 2, 3};
+int[] copy1 = Arrays.copyOf(original, original.length);     // full copy
+int[] copy2 = Arrays.copyOfRange(original, 1, 3);            // partial copy [1,3)
+int[] copy3 = original.clone();                                // clone() method
+
+System.arraycopy(original, 0, copy1, 0, original.length);    // low-level copy
+```
+**Note:** Simply doing `int[] copy = original;` does NOT copy — it just copies the reference; both variables point to the SAME array.
+
+## 5.8 Array Class (`java.util.Arrays`)
+**Definition:** Utility class with static helper methods for arrays.
+
+## 5.9 Arrays Utility Methods
+```java
+import java.util.Arrays;
+
+int[] arr = {3, 1, 2};
+Arrays.sort(arr);                  // sort
+Arrays.toString(arr);              // "[1, 2, 3]" - readable string
+Arrays.fill(arr, 0);                // fill all with 0
+Arrays.equals(arr1, arr2);          // compare two arrays' contents
+Arrays.binarySearch(arr, 2);        // search in sorted array
+Arrays.asList(1, 2, 3);             // convert to List (fixed-size)
+```
+
+**Master Practice Set for Arrays**
+1. Write a program to find the second largest element in an array.
+2. Write a program to reverse an array in place (without extra array).
+3. What's the difference between a regular 2D array and a jagged array?
+4. Write a program to find the sum and average of all elements in an array.
+5. Explain why `int[] copy = original;` does NOT create a real copy.
+6. Write a program to remove duplicates from a sorted array (in place, return new length).
+7. Write a program to rotate an array left by k positions.
+
+---
+
+# SECTION 6: STRINGS
+
+## 6.1 String Class
+**Definition:** `String` is a class in `java.lang` representing a sequence of characters. Strings are **immutable** — once created, their value cannot change.
+```java
+String s1 = "Hello";                    // String literal (goes to String Pool)
+String s2 = new String("Hello");        // explicit object (goes to Heap, separate from pool)
+```
+
+## 6.2 String Pool
+**Definition:** A special memory region in the heap where Java stores unique String literals for reuse, improving memory efficiency.
+```java
+String a = "java";
+String b = "java";
+System.out.println(a == b);  // true - both point to same pooled object
+
+String c = new String("java");
+System.out.println(a == c);  // false - c is a separate heap object
+System.out.println(a.equals(c)); // true - same content
+
+String d = c.intern();        // forces 'd' to use the pooled reference
+System.out.println(a == d);   // true
+```
+
+## 6.3 Immutable String
+**Definition:** Once a `String` object is created, its internal character data cannot be changed. Any "modification" method actually creates and returns a **new** String object.
+```java
+String s = "Hello";
+s.concat(" World");          // creates new string but doesn't change s
+System.out.println(s);        // still "Hello"
+s = s.concat(" World");       // now s is reassigned to the new string
+System.out.println(s);        // "Hello World"
+```
+**Why immutable?** Security (e.g., used in class loading, file paths, network connections — can't be altered mid-use), thread-safety (shared safely across threads without synchronization), allows String Pool caching, allows safe hashCode caching for fast HashMap key lookups.
+
+## 6.4 String Methods
+```java
+String s = "  Hello World  ";
+s.length();                  // 15 (including spaces)
+s.trim();                    // "Hello World" (removes leading/trailing whitespace)
+s.strip();                   // similar, Unicode-aware (Java 11+)
+s.toUpperCase();             // "  HELLO WORLD  "
+s.toLowerCase();             // "  hello world  "
+s.charAt(2);                  // 'H' (index 2 after spaces)
+s.indexOf("World");           // index where "World" starts
+s.lastIndexOf("o");           // last occurrence index
+s.substring(2, 7);             // "Hello"
+s.replace("World", "Java");    // replaces all occurrences
+s.contains("World");           // true
+s.startsWith("  He");           // true
+s.endsWith("  ");                // true
+s.equals("hello world");          // false (case-sensitive)
+s.equalsIgnoreCase(" hello world "); // depends on exact spacing
+s.split(" ");                      // array of substrings
+s.isEmpty();                        // checks length == 0
+s.isBlank();                         // checks only whitespace (Java 11+)
+String.valueOf(123);                  // "123" - convert other type to String
+"123".equals(s);                       
+Integer.parseInt("123");                // 123 - String to int
+```
+
+## 6.5 StringBuilder
+**Definition:** A **mutable** sequence of characters — recommended for building/concatenating strings in a loop (much faster than `String` concatenation since it doesn't create new objects each time). NOT thread-safe.
+```java
+StringBuilder sb = new StringBuilder();
+sb.append("Hello");
+sb.append(" ").append("World");
+sb.insert(0, ">> ");
+sb.reverse();
+sb.deleteCharAt(0);
+sb.replace(0, 2, "XY");
+System.out.println(sb.toString());
+System.out.println(sb.length());
+```
+
+## 6.6 StringBuffer
+**Definition:** Same API as `StringBuilder`, but **thread-safe** (synchronized methods) — slightly slower due to synchronization overhead. Use in multithreaded contexts.
+```java
+StringBuffer sbf = new StringBuffer("Hello");
+sbf.append(" World");
+```
+**Comparison Table**
+| | String | StringBuilder | StringBuffer |
+|---|---|---|---|
+| Mutability | Immutable | Mutable | Mutable |
+| Thread-safe | N/A (immutable, safe by nature) | No | Yes |
+| Performance | Slow for repeated concatenation | Fast | Slower than StringBuilder |
+
+## 6.7 StringTokenizer
+**Definition:** Legacy class (`java.util`) used to break a string into tokens based on delimiters (largely replaced by `String.split()` in modern code, but still asked about in interviews).
+```java
+import java.util.StringTokenizer;
+StringTokenizer st = new StringTokenizer("Java is fun", " ");
+while (st.hasMoreTokens()) {
+    System.out.println(st.nextToken());
+}
+// Output: Java / is / fun
+```
+
+## 6.8 String Formatting
+**Definition:** Creating formatted strings using placeholders.
+```java
+String formatted = String.format("Name: %s, Age: %d, GPA: %.2f", "Alice", 22, 3.789);
+System.out.println(formatted);  // Name: Alice, Age: 22, GPA: 3.79
+
+System.out.printf("Score: %d%n", 95);
+```
+Common format specifiers: `%s` (string), `%d` (int), `%f` (float/double), `%.2f` (2 decimal places), `%n` (newline).
+
+## 6.9 Regular Expressions (Regex)
+**Definition:** Pattern-matching syntax used for validating/searching/manipulating strings, via `java.util.regex` package or `String` methods.
+```java
+String email = "test@example.com";
+boolean valid = email.matches("^[\\w.-]+@[\\w.-]+\\.[a-z]{2,}$");
+System.out.println(valid); // true
+
+import java.util.regex.*;
+Pattern p = Pattern.compile("\\d+");   // matches one or more digits
+Matcher m = p.matcher("Order123Item456");
+while (m.find()) {
+    System.out.println(m.group());  // 123, then 456
+}
+
+"a,b,,c".split(",");        // splits by comma
+"Hello123World".replaceAll("[0-9]", "");  // removes digits -> "HelloWorld"
+```
+
+**Master Practice Set for Strings**
+1. Why is String immutable in Java? Give at least 2 reasons.
+2. Write a program to check if a given string is a palindrome.
+3. Write a program to count the occurrences of each character in a string (use HashMap).
+4. Difference between `String`, `StringBuilder`, `StringBuffer`?
+5. Write a program to reverse each word in a sentence while keeping word order.
+6. Write a regex to validate a 10-digit phone number.
+7. What is the String Pool and how does `intern()` relate to it?
+8. Write a program to check if two strings are anagrams of each other.
+
+---
+
+# SECTION 7: OBJECT ORIENTED PROGRAMMING (OOP)
+
+## 7.1 Class
+**Definition:** A blueprint/template that defines properties (fields) and behaviors (methods) for objects. No memory is allocated until an object is created from it.
+```java
+class Student {
+    String name;     // field
+    int age;
+    void study() {    // method
+        System.out.println(name + " is studying");
+    }
+}
+```
+
+## 7.2 Object
+**Definition:** A real instance of a class, created using the `new` keyword; occupies memory in the heap.
+```java
+Student s1 = new Student();   // object creation
+s1.name = "Alice";
+s1.age = 20;
+s1.study();                     // calling method on object
+```
+
+## 7.3 Constructors
+
+### 7.3.1 Default Constructor
+**Definition:** A no-argument constructor automatically provided by Java if you don't define ANY constructor; initializes fields to default values.
+```java
+class Car {
+    String brand;
+    // No constructor written -> Java auto-generates: Car() {}
+}
+Car c = new Car();  // brand is null by default
+```
+
+### 7.3.2 Parameterized Constructor
+**Definition:** A constructor that accepts arguments to initialize fields with specific values at object creation time.
+```java
+class Car {
+    String brand;
+    int speed;
+    Car(String brand, int speed) {
+        this.brand = brand;   // 'this' distinguishes field from parameter
+        this.speed = speed;
+    }
+}
+Car c = new Car("Toyota", 180);
+```
+**Note:** Once you define a parameterized constructor, the default no-arg constructor is NOT auto-generated — you must explicitly add one if still needed.
+
+### 7.3.3 Copy Constructor Concept
+**Definition:** Java has no built-in copy constructor (unlike C++), but you can manually define one that creates a new object by copying another object's field values.
+```java
+class Car {
+    String brand;
+    int speed;
+    Car(String brand, int speed) { this.brand = brand; this.speed = speed; }
+    Car(Car other) {                    // copy constructor
+        this.brand = other.brand;
+        this.speed = other.speed;
+    }
+}
+Car original = new Car("Honda", 160);
+Car copy = new Car(original);           // independent copy
+```
+**Practice Questions (7.1–7.3)**
+1. What's the difference between a class and an object?
+2. Why does Java not provide a default no-arg constructor once you write a parameterized one?
+3. Write a `Book` class with a copy constructor.
+
+## 7.4 `this` Keyword
+**Definition:** Refers to the **current object** instance. Used to: (1) distinguish instance fields from parameters with the same name, (2) call another constructor in the same class (`this(...)`), (3) pass the current object as an argument.
+```java
+class Point {
+    int x, y;
+    Point(int x, int y) {
+        this.x = x;     // disambiguates field vs parameter
+        this.y = y;
+    }
+    Point() {
+        this(0, 0);      // constructor chaining - calls Point(int,int)
+    }
+}
+```
+
+## 7.5 `static` Keyword
+**Definition:** Indicates a member belongs to the **class itself**, not to individual objects — shared across all instances; accessible without creating an object.
+```java
+class Counter {
+    static int count = 0;        // shared across all objects
+    Counter() { count++; }
+    static void showCount() {     // static method - no 'this', can only access static members directly
+        System.out.println("Count: " + count);
+    }
+}
+new Counter(); new Counter(); new Counter();
+Counter.showCount();   // Count: 3
+```
+**Note:** Static methods cannot access instance (non-static) variables/methods directly because they aren't tied to a specific object.
+
+## 7.6 `final` Keyword
+**Definition:** Used to make something **unchangeable**, with 3 uses:
+```java
+final int MAX = 100;         // 1. constant variable - can't be reassigned
+class Vehicle {
+    final void start() { }    // 2. method can't be overridden by subclass
+}
+final class Utility { }       // 3. class can't be extended/inherited
+```
+
+**Practice Questions (7.4–7.6)**
+1. Give 3 uses of the `this` keyword.
+2. Why can't a static method access instance variables directly?
+3. What are the three uses of `final`?
+
+## 7.7 Encapsulation
+**Definition:** Bundling data (fields) and methods that operate on it within a class, while restricting direct external access to fields (usually `private`), exposing controlled access via public getters/setters.
+```java
+class BankAccount {
+    private double balance;    // hidden
+
+    public double getBalance() { return balance; }
+    public void deposit(double amt) {
+        if (amt > 0) balance += amt;   // validation/control
+    }
+    public void withdraw(double amt) {
+        if (amt > 0 && amt <= balance) balance -= amt;
+    }
+}
+```
+**Why:** Protects data integrity, allows validation, hides implementation details, easy to change internals without breaking external code.
+
+**Practice Questions**
+1. Why is encapsulation important? Give a real-world analogy (e.g., a capsule medicine — contents hidden, accessed through controlled interface).
+2. Write an encapsulated `Employee` class with private salary field and public getter/setter with validation (salary can't be negative).
+
+## 7.8 Inheritance
+**Definition:** Mechanism where one class (**subclass/child**) acquires fields and methods of another class (**superclass/parent**) using `extends`. Promotes code reuse.
+
+### 7.8.1 Single Inheritance
+**Definition:** One class inherits from exactly one parent class.
+```java
+class Animal {
+    void eat() { System.out.println("eating"); }
+}
+class Dog extends Animal {
+    void bark() { System.out.println("barking"); }
+}
+Dog d = new Dog();
+d.eat(); d.bark();
+```
+
+### 7.8.2 Multilevel Inheritance
+**Definition:** A chain of inheritance — class C inherits from B, which inherits from A.
+```java
+class Animal { void eat() { System.out.println("eating"); } }
+class Dog extends Animal { void bark() { System.out.println("barking"); } }
+class Puppy extends Dog { void weep() { System.out.println("weeping"); } }
+
+Puppy p = new Puppy();
+p.eat(); p.bark(); p.weep();   // inherits from both ancestors
+```
+
+### 7.8.3 Hierarchical Inheritance
+**Definition:** Multiple subclasses inherit from a single parent class.
+```java
+class Animal { void eat() { System.out.println("eating"); } }
+class Dog extends Animal { void bark() { System.out.println("bark"); } }
+class Cat extends Animal { void meow() { System.out.println("meow"); } }
+```
+**Note:** Java does NOT support **multiple inheritance of classes** (a class extending two classes) to avoid the Diamond Problem — but multiple interfaces CAN be implemented.
+
+**Practice Questions (7.8)**
+1. What is the Diamond Problem and how does Java avoid it for classes?
+2. Write a 3-level multilevel inheritance hierarchy: Vehicle → Car → SportsCar.
+3. Write a hierarchical inheritance example with one parent `Shape` and 2 children `Circle`, `Square`.
+
+## 7.9 Polymorphism
+**Definition:** "Many forms" — the ability of an object/method to behave differently based on context.
+
+### 7.9.1 Compile Time Polymorphism (Method Overloading)
+**Definition:** Same method name, different parameter list, resolved at **compile time**.
+```java
+class Calculator {
+    int add(int a, int b) { return a + b; }
+    double add(double a, double b) { return a + b; }
+}
+```
+
+### 7.9.2 Runtime Polymorphism (Method Overriding)
+**Definition:** Subclass provides a specific implementation of a method already defined in its parent class; the actual method called is determined at **runtime** based on the object's actual type (dynamic method dispatch).
+```java
+class Animal {
+    void sound() { System.out.println("Some generic sound"); }
+}
+class Cat extends Animal {
+    @Override
+    void sound() { System.out.println("Meow"); }
+}
+Animal a = new Cat();   // reference type Animal, object type Cat
+a.sound();               // "Meow" - decided at runtime
+```
+**Rules for overriding:** same name & parameters, same/covariant return type, cannot reduce access level, `static`/`final`/`private` methods cannot be overridden.
+
+**Practice Questions (7.9)**
+1. Differentiate compile-time and runtime polymorphism with examples.
+2. Write overloaded `area()` methods and an overridden `toString()` method for a `Shape` hierarchy.
+3. Why can't `static` methods be overridden? (Answer: they belong to the class, resolved at compile time/by reference type, not dynamically dispatched.)
+
+## 7.10 Abstraction
+**Definition:** Hiding internal implementation details and showing only essential features to the user.
+```java
+abstract class Shape {
+    abstract double area();           // abstract method - no body
+    void show() {                      // concrete method
+        System.out.println("Area = " + area());
+    }
+}
+class Circle extends Shape {
+    double radius;
+    Circle(double r) { radius = r; }
+    double area() { return Math.PI * radius * radius; }
+}
+```
+**Note:** Abstract classes CANNOT be instantiated directly (`new Shape()` is illegal).
+
+## 7.11 Interface
+**Definition:** A fully abstract type (pure contract) specifying WHAT a class must do, not HOW. All methods are implicitly `public abstract` (except `default`/`static`/`private` methods added since Java 8/9). A class can implement MULTIPLE interfaces, enabling multiple inheritance of type.
+```java
+interface Drawable {
+    void draw();                          // abstract
+    default void info() {                  // default method (Java 8+) - has a body
+        System.out.println("A drawable shape");
+    }
+    static void utility() {                  // static interface method
+        System.out.println("Utility method");
+    }
+}
+class Square implements Drawable {
+    public void draw() { System.out.println("Drawing a square"); }
+}
+```
+**Comparison Table: Abstract Class vs Interface**
+| Abstract Class | Interface |
+|---|---|
+| Can have constructors | Cannot have constructors |
+| Can have instance fields | Only `public static final` constants |
+| Single inheritance only (`extends` one class) | Multiple implementation (`implements` many) |
+| Can have all access modifiers | Methods implicitly public |
+| Use for shared base behavior/state | Use to define a capability/contract |
+
+**Practice Questions (7.10–7.11)**
+1. Can you create an object of an abstract class? Why or why not?
+2. Write an interface `Payable` with method `pay()`, implemented by `Employee` and `Vendor` classes.
+3. What is a `default` method in an interface, and why was it introduced in Java 8? (Answer: to allow adding new methods to interfaces without breaking existing implementing classes.)
+
+## 7.12 Association
+**Definition:** A general relationship between two independent classes/objects where one uses the other, but neither "owns" the other's lifecycle. Can be one-to-one, one-to-many, many-to-many.
+```java
+class Teacher { String name; }
+class Student {
+    Teacher teacher;   // association - Student "knows" a Teacher
+}
+```
+
+## 7.13 Aggregation
+**Definition:** A special "has-a" form of association representing a **weak ownership** — the contained object can exist independently of the container (e.g., a Department has Professors, but Professors can exist without the Department).
+```java
+class Professor { String name; }
+class Department {
+    List<Professor> professors;  // aggregation - professors can exist without department
+}
+```
+
+## 7.14 Composition
+**Definition:** A **strong "has-a"** relationship — the contained object CANNOT exist independently; its lifecycle is tightly bound to the owner (e.g., a House has Rooms; Rooms don't exist without the House).
+```java
+class Engine {
+    void start() { System.out.println("Engine started"); }
+}
+class Car {
+    private final Engine engine = new Engine();   // composition - Engine created/destroyed with Car
+    void start() { engine.start(); }
+}
+```
+**Note:** "Favor composition over inheritance" is a well-known OOP design principle — it gives more flexibility than rigid class hierarchies.
+
+**Practice Questions (7.12–7.14)**
+1. Differentiate Association, Aggregation, and Composition with real-world examples.
+2. Why is composition often preferred over inheritance in good design?
+3. Model a `Library` (composition with `Book`) and a `Student`-`Course` relationship (aggregation).
+
+## 7.15 Object Class
+**Definition:** The root class of the entire Java class hierarchy — every class implicitly extends `Object` if no other parent is specified.
+
+**Key methods:**
+```java
+toString()       // returns string representation; override for meaningful output
+equals(Object o) // logical equality check; override for custom comparison logic
+hashCode()       // integer hash used by HashMap/HashSet; must be overridden alongside equals()
+getClass()       // returns runtime class metadata
+clone()          // creates a copy (class must implement Cloneable)
+```
+```java
+class Point {
+    int x, y;
+    Point(int x, int y) { this.x = x; this.y = y; }
+
+    @Override
+    public String toString() { return "Point(" + x + ", " + y + ")"; }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Point)) return false;
+        Point p = (Point) o;
+        return x == p.x && y == p.y;
+    }
+
+    @Override
+    public int hashCode() { return Objects.hash(x, y); }
+}
+```
+**Important Contract:** If two objects are `equal()`, they MUST have the same `hashCode()` — otherwise HashMap/HashSet behave incorrectly.
+
+## 7.16 Wrapper Classes
+**Definition:** Classes that "wrap" primitive types into objects, allowing primitives to be used where objects are required (e.g., in Collections, which only store objects).
+
+| Primitive | Wrapper Class |
+|---|---|
+| byte | Byte |
+| short | Short |
+| int | Integer |
+| long | Long |
+| float | Float |
+| double | Double |
+| char | Character |
+| boolean | Boolean |
+
+```java
+int a = 5;
+Integer obj = a;            // autoboxing - primitive to object, automatic
+int b = obj;                  // unboxing - object to primitive, automatic
+
+Integer x = Integer.valueOf(10);
+int y = x.intValue();
+String s = Integer.toString(10);
+int parsed = Integer.parseInt("10");
+
+// Caching note: Integer caches values -128 to 127
+Integer i1 = 100, i2 = 100;
+System.out.println(i1 == i2);   // true (cached)
+Integer i3 = 200, i4 = 200;
+System.out.println(i3 == i4);   // false (not cached, different objects)
+```
+
+**Master Practice Set for OOP**
+1. Explain all 4 pillars of OOP with one real-world example each.
+2. Write a complete program demonstrating Encapsulation + Inheritance + Polymorphism + Abstraction together (e.g., Shape hierarchy with private fields and overridden methods).
+3. Why must `equals()` and `hashCode()` be overridden together?
+4. What is autoboxing/unboxing? Why does `Integer i1 = 100; Integer i2 = 100; i1 == i2` give `true`, but with 200 it gives `false`?
+5. Differentiate Abstract class vs Interface — when would you choose one over the other in a real project?
+
+---
+
+# SECTION 8: PACKAGES
+
+## 8.1 Package Creation
+**Definition:** A package is a namespace/folder grouping related classes/interfaces, helping organize code and avoid naming conflicts.
+```java
+// File: com/example/utils/MathUtils.java
+package com.example.utils;
+
+public class MathUtils {
+    public static int square(int n) { return n * n; }
+}
+```
+**Note:** The `package` statement must be the FIRST line in the file (before imports). Folder structure must match the package name (`com/example/utils/`).
+
+## 8.2 Import Statement
+**Definition:** Used to bring classes from other packages into scope so they can be used without fully qualified names.
+```java
+import com.example.utils.MathUtils;     // import a specific class
+import java.util.*;                       // import all classes in a package (wildcard)
+import static java.lang.Math.PI;          // static import - use PI directly instead of Math.PI
+
+public class Demo {
+    public static void main(String[] args) {
+        int result = MathUtils.square(5);
+        System.out.println(result);
+    }
+}
+```
+**Practice Questions (8.1-8.2)**
+1. Why must `package` be the first statement in a file?
+2. What's the difference between `import java.util.*` and `import java.util.ArrayList`?
+3. What is a static import, and when is it useful?
+
+## 8.3 Access Modifiers
+
+### 8.3.1 public
+**Definition:** Accessible from anywhere — any class, any package.
+```java
+public class Demo { public int x; }
+```
+
+### 8.3.2 private
+**Definition:** Accessible only within the SAME class. Not visible to subclasses or other classes, even in the same package.
+```java
+class Account { private double balance; }
+```
+
+### 8.3.3 protected
+**Definition:** Accessible within the same package AND by subclasses (even in different packages, via inheritance).
+```java
+class Animal { protected void makeSound() { } }
+```
+
+### 8.3.4 default (package-private)
+**Definition:** No modifier specified — accessible only within the same package.
+```java
+class Helper { void assist() { } }   // no modifier = default access
+```
+
+**Full Comparison Table**
+| Modifier | Same Class | Same Package | Subclass (diff package) | Other Packages |
+|---|---|---|---|---|
+| private | ✅ | ❌ | ❌ | ❌ |
+| default | ✅ | ✅ | ❌ | ❌ |
+| protected | ✅ | ✅ | ✅ | ❌ |
+| public | ✅ | ✅ | ✅ | ✅ |
+
+**Practice Questions (8.3)**
+1. Explain all 4 access modifiers with a table.
+2. Why would you use `private` for fields but `public` for methods (encapsulation principle)?
+3. When is `protected` access specifically useful? (Answer: when designing a class meant to be extended, allowing subclasses controlled access to internals.)
+
+---
+
+# SECTION 9: EXCEPTION HANDLING
+
+## 9.1 Exception Hierarchy
+**Definition:** All exceptions/errors derive from `Throwable`.
+```
+Throwable
+ ├── Error                     (serious JVM-level problems, not meant to be caught)
+ │     ├── OutOfMemoryError
+ │     └── StackOverflowError
+ └── Exception
+       ├── Checked Exceptions    (must handle or declare - checked at compile time)
+       │     ├── IOException
+       │     └── SQLException
+       └── RuntimeException      (Unchecked - checked at runtime, optional to handle)
+             ├── NullPointerException
+             ├── ArrayIndexOutOfBoundsException
+             ├── ArithmeticException
+             └── ClassCastException
+```
+
+## 9.2 try
+**Definition:** Block of code that might throw an exception; monitored for errors.
+```java
+try {
+    int result = 10 / 0;
+} catch (ArithmeticException e) {
+    System.out.println("Caught: " + e.getMessage());
+}
+```
+
+## 9.3 catch
+**Definition:** Block that handles a specific type of exception thrown in the corresponding `try` block.
+```java
+try {
+    int[] arr = new int[3];
+    arr[5] = 10;
+} catch (ArrayIndexOutOfBoundsException e) {
+    System.out.println("Index error: " + e.getMessage());
+}
+```
+
+## 9.4 finally
+**Definition:** Block that ALWAYS executes after try/catch, regardless of whether an exception occurred — typically used for cleanup (closing files, connections).
+```java
+try {
+    System.out.println("In try");
+    throw new RuntimeException("Error!");
+} catch (RuntimeException e) {
+    System.out.println("In catch: " + e.getMessage());
+} finally {
+    System.out.println("In finally - always runs");
+}
+```
+**Note:** `finally` does NOT run only if JVM exits via `System.exit()` or the thread is forcibly killed.
+
+## 9.5 throw
+**Definition:** Keyword used to **explicitly throw** an exception instance (manually triggering an error).
+```java
+void checkAge(int age) {
+    if (age < 18) {
+        throw new IllegalArgumentException("Must be 18+");   // actually throwing
+    }
+}
+```
+
+## 9.6 throws
+**Definition:** Keyword used in a method signature to **declare** that the method might throw a checked exception, passing the responsibility to the caller.
+```java
+void readFile(String path) throws IOException {   // declares - caller must handle
+    FileReader fr = new FileReader(path);
+}
+```
+
+## 9.7 Multiple Catch
+**Definition:** Multiple `catch` blocks to handle different exception types differently; can also combine types in one block with `|`.
+```java
+try {
+    int[] arr = new int[3];
+    arr[5] = 10 / 0;
+} catch (ArithmeticException e) {
+    System.out.println("Arithmetic error");
+} catch (ArrayIndexOutOfBoundsException e) {
+    System.out.println("Index error");
+} catch (Exception e) {                 // generic catch-all - must be LAST
+    System.out.println("Other error");
+}
+
+// Multi-catch (Java 7+)
+try {
+    // risky code
+} catch (ArithmeticException | NullPointerException e) {
+    System.out.println("Either arithmetic or null pointer issue: " + e.getMessage());
+}
+```
+**Rule:** More specific exception types must be caught BEFORE more general ones (`Exception` last), else compile error (unreachable catch block).
+
+## 9.8 Nested Try
+**Definition:** A `try` block inside another `try` block — inner exceptions can be handled locally, or propagate to outer catch if unhandled.
+```java
+try {
+    try {
+        int[] arr = new int[2];
+        arr[5] = 10;
+    } catch (NullPointerException e) {
+        System.out.println("Inner catch - won't match");
+    }
+} catch (ArrayIndexOutOfBoundsException e) {
+    System.out.println("Outer catch handles it: " + e.getMessage());
+}
+```
+
+## 9.9 Custom Exceptions
+**Definition:** User-defined exception classes, created by extending `Exception` (checked) or `RuntimeException` (unchecked), for domain-specific error handling.
+```java
+class InsufficientFundsException extends Exception {
+    public InsufficientFundsException(String message) {
+        super(message);
+    }
+}
+class BankAccount {
+    double balance;
+    void withdraw(double amt) throws InsufficientFundsException {
+        if (amt > balance) {
+            throw new InsufficientFundsException("Not enough balance!");
+        }
+        balance -= amt;
+    }
+}
+// Usage
+try {
+    account.withdraw(1000);
+} catch (InsufficientFundsException e) {
+    System.out.println(e.getMessage());
+}
+```
+
+## 9.10 Checked Exceptions
+**Definition:** Exceptions checked by the compiler at **compile time** — must be either caught (`try-catch`) or declared (`throws`). Represent recoverable conditions outside program control (e.g., file not found, network failure).
+```java
+import java.io.*;
+void readFile() throws FileNotFoundException {
+    FileReader fr = new FileReader("data.txt");  // must handle/declare, or compile error
+}
+```
+
+## 9.11 Unchecked Exceptions
+**Definition:** Subclasses of `RuntimeException`, NOT checked at compile time — usually represent programming bugs (e.g., null checks missed, bad array index).
+```java
+String s = null;
+System.out.println(s.length());   // NullPointerException - unchecked, compiles fine, fails at runtime
+```
+
+**Comparison Table**
+| Checked | Unchecked |
+|---|---|
+| Compile-time checked | Runtime only |
+| Must be handled/declared | Optional |
+| e.g., IOException, SQLException | e.g., NullPointerException, ArithmeticException |
+| Represents recoverable external issues | Represents programming bugs |
+
+**Master Practice Set for Exception Handling**
+1. Draw/explain the full exception class hierarchy.
+2. Write a program with a custom exception `InvalidAgeException`, thrown when age < 0 or age > 150.
+3. Difference between `throw` and `throws`?
+4. Does `finally` execute if there's a `return` statement inside `try`? (Answer: Yes, finally still runs before the method actually returns.)
+5. Why should the generic `catch(Exception e)` always come last in a multi-catch chain?
+6. Write a try-with-resources example reading a file (auto-closes the resource).
+```java
+try (BufferedReader br = new BufferedReader(new FileReader("file.txt"))) {
+    System.out.println(br.readLine());
+} catch (IOException e) {
+    e.printStackTrace();
+}
+```
+7. What's the difference between `Error` and `Exception`? (Answer: Errors are serious JVM-level problems generally not meant to be caught/recovered from; Exceptions represent recoverable application-level problems.)
+
+---
+
+
